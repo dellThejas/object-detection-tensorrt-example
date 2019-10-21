@@ -1,3 +1,6 @@
+# Its runnign around 33 frames per second with gpus
+
+
 import os
 import ctypes
 import time
@@ -8,12 +11,13 @@ import cv2
 import numpy as np
 from PIL import Image
 import tensorrt as trt
+import time
 
-import utils.inference as inference_utils # TRT/TF inference wrappers
-import utils.model as model_utils # UFF conversion
-import utils.boxes as boxes_utils # Drawing bounding boxes
-import utils.coco as coco_utils # COCO dataset descriptors
-from utils.paths import PATHS # Path management
+import SSD_Model.utils.inference as inference_utils # TRT/TF inference wrappers
+import SSD_Model.utils.model as model_utils # UFF conversion
+import SSD_Model.utils.boxes as boxes_utils # Drawing bounding boxes
+import SSD_Model.utils.coco as coco_utils # COCO dataset descriptors
+from SSD_Model.utils.paths import PATHS # Path management
 
 import pycuda.driver as cuda
 import pycuda.autoinit
@@ -22,7 +26,8 @@ import pycuda.autoinit
 COCO_LABELS = coco_utils.COCO_CLASSES_LIST
 
 # Model used for inference
-MODEL_NAME = 'ssd_inception_v2_coco_2017_11_17'
+# MODEL_NAME = 'ssd_inception_v2_coco_2017_11_17' #tf-1.12
+MODEL_NAME = 'ssd_inception_v2_coco_2018_01_28'
 
 # Confidence threshold for drawing bounding box
 VISUALIZATION_THRESHOLD = 0.5
@@ -157,6 +162,8 @@ def main():
         batch_size=args.max_batch_size)
 
     print("TRT ENGINE PATH", args.trt_engine_path)
+    print("TRT ENGINE PATH", args)
+
 
     if args.camera == True:
         print('Running webcam:', args.camera)
@@ -165,6 +172,8 @@ def main():
 
         # Loop for running inference on frames from the webcam
         while True:
+            start_time = time.time()
+
             # Read frame from camera (and expand its dimensions to fit)
             ret, image_np = cap.read()
 
@@ -181,8 +190,10 @@ def main():
 
             # Display output
             cv2.imshow('object detection', final_img)
+            end_time = time.time()
+            print(1/(end_time - start_time), "fps")
 
-            if cv2.waitKey(25) & 0xFF == ord('q'):
+            if cv2.waitKey(100) & 0xFF == ord('q'):
                 cv2.destroyAllWindows()
                 break
 

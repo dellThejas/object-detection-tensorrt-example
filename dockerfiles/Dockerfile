@@ -1,5 +1,5 @@
 ### ----- INSTALL TENSORRT ----- ###
-FROM nvcr.io/nvidia/tensorrt:19.05-py3
+# FROM nvcr.io/nvidia/tensorrt:19.05-py3
 
 ### ----- INSTALL TENSORRT OPEN SOURCE SOFTWARE ----- ###
 # Install required libraries

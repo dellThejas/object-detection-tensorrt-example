@@ -11,18 +11,18 @@ if [ -d "$DATA_DIR" ]; then
 	echo "$DATA_DIR has already been downloaded"
 else
 	echo "Downloading VOC dataset"
-	wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtest_06-Nov-2007.tar
+	sudo wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtest_06-Nov-2007.tar
 	tar -xf VOCtest_06-Nov-2007.tar
 fi
 
 # Build the dockerfile for the engironment 
-if [ ! -z $(docker images -q object_detection_webcam:latest) ]; then 
+if [ ! -z $(sudo docker images -q object_detection_webcam:latest) ]; then 
 	echo "Dockerfile has already been built"
 else
 	echo "Building docker image" 
-	docker build -f dockerfiles/Dockerfile --tag=object_detection_webcam .
+	sudo docker build -f dockerfiles/Dockerfile --tag=object_detection_webcam .
 fi
 
 # Start the docker container
 echo "Starting docker container" 
-docker run --runtime=nvidia -it -v `pwd`:/mnt --device=/dev/video0 -e DISPLAY=$DISPLAY -v $XSOCK:$XSOCK -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH object_detection_webcam 
+sudo docker run --runtime=nvidia -it -v `pwd`:/mnt --device=/dev/video0 -e DISPLAY=$DISPLAY -v $XSOCK:$XSOCK -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH object_detection_webcam 

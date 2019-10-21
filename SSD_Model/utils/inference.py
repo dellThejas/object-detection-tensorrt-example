@@ -57,8 +57,8 @@ import pycuda.driver as cuda
 import pycuda.autoinit
 import numpy as np
 
-import utils.engine as engine_utils # TRT Engine creation/save/load utils
-import utils.model as model_utils # UFF conversion uttils
+import SSD_Model.utils.engine as engine_utils # TRT Engine creation/save/load utils
+import SSD_Model.utils.model as model_utils # UFF conversion uttils
 
 # ../../common.py
 sys.path.insert(1,
@@ -68,7 +68,7 @@ sys.path.insert(1,
         os.pardir
     )
 )
-import utils.common as common
+import SSD_Model.utils.common as common
 
 
 # TensorRT logger singleton

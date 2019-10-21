@@ -113,7 +113,7 @@ def ssd_unsupported_nodes_to_plugin_nodes(ssd_graph):
         "Postprocessor": NMS,
         "Preprocessor": Input,
         "ToFloat": Input,
-        "image_tensor": Input,
+        # "image_tensor": Input, #removed for 2017 models
         "MultipleGridAnchorGenerator/Concatenate": concat_priorbox,
         "MultipleGridAnchorGenerator/Identity": concat_priorbox,
         "concat": concat_box_loc,
@@ -229,9 +229,9 @@ def prepare_ssd_model(model_name="ssd_inception_v2_coco_2017_11_17", silent=Fals
         model_name (str): chosen object detection model
         silent (bool): if True, writes progress messages to stdout
     """
-    if model_name != "ssd_inception_v2_coco_2017_11_17":
-        raise NotImplementedError(
-            "Model {} is not supported yet".format(model_name))
+    # if model_name != "ssd_inception_v2_coco_2017_11_17":
+    #     raise NotImplementedError(
+    #         "Model {} is not supported yet".format(model_name))
     download_model(model_name, silent)
     ssd_pb_path = PATHS.get_model_pb_path(model_name)
     ssd_uff_path = PATHS.get_model_uff_path(model_name)
